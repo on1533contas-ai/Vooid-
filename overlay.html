@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08060d">
+<title>VOID • Overlay</title>
+<style>
+:root{--purple:#8424d5;--purple2:#a64cff;--bg:#070609;--panel:#101014;--muted:#77727f;--line:#28232e}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 15%,#21102f 0,transparent 38%),#050507;color:#f4f0f8;font-family:Inter,system-ui,-apple-system,Arial,sans-serif;min-height:100vh;padding:env(safe-area-inset-top) 0 calc(100px + env(safe-area-inset-bottom))}
+header{height:94px;padding:26px 22px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:linear-gradient(#08060df2,#08060dcc);backdrop-filter:blur(12px);z-index:3}
+.brand{font-weight:900;letter-spacing:3px;font-size:20px;line-height:1.12}.brand span{display:block;color:var(--purple2)}
+.status{font-size:11px;letter-spacing:1.2px;color:#aaa5b0;border:1px solid #302a37;border-radius:30px;padding:11px 14px;background:#141119}
+.status i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#32d66f;margin-right:7px}
+main{max-width:560px;margin:115px auto 0;padding:0 18px}
+.panel{background:linear-gradient(145deg,#101014,#09090b);border:1px solid #29242d;border-radius:27px;padding:28px 24px 30px;box-shadow:0 20px 70px #0009}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:2.2px;color:#77717e;margin:4px 0 22px}
+.setting{height:63px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #201d24;font-size:16px}
+.setting:last-of-type{border:0}.setting .name{display:flex;align-items:center;gap:13px}.bar{width:4px;height:36px;border-radius:5px;background:var(--purple)}
+.switch{width:59px;height:32px;border:0;border-radius:30px;background:#29272c;padding:4px;cursor:pointer;transition:.2s}
+.switch:after{content:"";display:block;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.switch[aria-checked="true"]{background:linear-gradient(90deg,#7420c5,#9a35e9)}
+.switch[aria-checked="true"]:after{transform:translateX(27px)}
+.section-label{font-size:12px;font-weight:800;letter-spacing:1.7px;color:#716b78;margin:20px 0 12px}
+.primary,.secondary{width:100%;height:65px;border-radius:15px;font-size:15px;font-weight:900;letter-spacing:1.3px;cursor:pointer}
+.primary{border:1px solid #a34bf0;color:white;background:linear-gradient(110deg,#7c20c9,#54118d);box-shadow:0 8px 24px #7721c64d}
+.preview{height:192px;background:#000;border:1px solid #24172e;border-radius:17px;margin-top:22px;display:grid;place-items:center;color:#51485a;font-size:12px}
+.secondary{height:56px;margin-top:17px;background:#17101f;border:1px solid #512273;color:#c68cff}
+nav{position:fixed;z-index:5;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(92%,490px);height:91px;border:1px solid #29232f;border-radius:25px;background:#08080bea;backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-around;padding:8px}
+nav button{border:0;background:transparent;color:#77717e;font-weight:700;font-size:12px;letter-spacing:.3px;border-radius:20px;height:72px;min-width:72px;cursor:pointer}
+nav button.active{color:#c78aff;background:#1c1028;box-shadow:inset 0 0 0 1px #3b2051}
+nav .ico{display:block;font-size:23px;margin-bottom:3px}
+.toast{position:fixed;z-index:8;bottom:120px;left:50%;transform:translateX(-50%);background:#21152c;border:1px solid #63318a;padding:12px 18px;border-radius:14px;font-size:13px;display:none;max-width:90%;text-align:center}
+body.fullscreen main{margin-top:20px}
+body.fullscreen .preview{height:55vh}
+@media(max-width:420px){main{margin-top:115px}.panel{padding:27px 22px}.status{font-size:10px;padding:10px}.brand{font-size:19px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">VOID<span>BYPASS</span></div>
+  <div class="status"><i></i><b>CONECTADO</b>　⇥</div>
+</header>
+<main>
+<section class="panel">
+  <div class="eyebrow">OVERLAY ESP VOID</div>
+  <div class="setting"><div class="name"><span class="bar"></span>Ativar Overlay</div><button class="switch" role="switch" aria-checked="true" aria-label="Ativar Overlay"></button></div>
+  <div class="setting"><div class="name"><span class="bar"></span>Caixa</div><button class="switch" role="switch" aria-checked="true" aria-label="Caixa"></button></div>
+  <div class="setting"><div class="name"><span class="bar"></span>Vida</div><button class="switch" role="switch" aria-checked="false" aria-label="Vida"></button></div>
+  <div class="setting"><div class="name"><span class="bar"></span>Linha</div><button class="switch" role="switch" aria-checked="false" aria-label="Linha"></button></div>
+  <div class="setting"><div class="name"><span class="bar"></span>Nome</div><button class="switch" role="switch" aria-checked="true" aria-label="Nome"></button></div>
+  <div class="setting"><div class="name"><span class="bar"></span>Distância</div><button class="switch" role="switch" aria-checked="true" aria-label="Distância"></button></div>
+  <div class="section-label">COMPARTILHAR OVERLAY ESP</div>
+  <button class="primary" id="share">↗　COMPARTILHAR ESP</button>
+  <div class="preview" id="preview" aria-label="Área de prévia">PRÉVIA DO OVERLAY</div>
+  <button class="secondary" id="fullscreen">⛶　TELA CHEIA</button>
+</section>
+</main>
+<nav aria-label="Navegação principal">
+  <button data-tab="Painel" onclick="location.href='dashboard.html'"><span class="ico">⌂</span>Painel</button>
+  <button data-tab="Overlay" class="active" id="overlay-tab"><span class="ico">▱</span>Overlay</button>
+  <button data-tab="Download" id="download-tab" onclick="location.href='dns.html'"><span class="ico">⇩</span>Download</button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const toastEl=document.getElementById('toast');
+document.getElementById('overlay-tab').addEventListener('click',()=>{
+  overlayMain.hidden=false;
+  downloadPanel.hidden=true;
+  document.getElementById('overlay-tab').classList.add('active');
+  document.getElementById('download-tab').classList.remove('active');
+});
+
+let toastTimer;
+function toast(msg){toastEl.textContent=msg;toastEl.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastEl.style.display='none',2200)}
+document.querySelectorAll('.switch').forEach(btn=>btn.addEventListener('click',()=>{
+ const next=btn.getAttribute('aria-checked')!=='true';
+ btn.setAttribute('aria-checked',String(next));
+ btn.setAttribute('aria-label',btn.getAttribute('aria-label'));
+}));
+document.getElementById('share').addEventListener('click',async()=>{
+ const settings={};
+ document.querySelectorAll('.switch').forEach(b=>settings[b.getAttribute('aria-label')]=b.getAttribute('aria-checked')==='true');
+ const payload='Configurações do Overlay\\n'+Object.entries(settings).map(([k,v])=>k+': '+(v?'Ativado':'Desativado')).join('\\n');
+ try{
+   if(navigator.share) await navigator.share({title:'Configurações do Overlay',text:payload});
+   else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(payload);toast('Configurações copiadas para compartilhar!');}
+   else toast('Compartilhamento não disponível neste navegador.');
+ }catch(e){if(e.name!=='AbortError')toast('Não foi possível compartilhar agora.');}
+});
+document.getElementById('fullscreen').addEventListener('click',async()=>{
+ document.body.classList.toggle('fullscreen');
+ const btn=document.getElementById('fullscreen');
+ btn.textContent=document.body.classList.contains('fullscreen')?'⛶　SAIR DA TELA CHEIA':'⛶　TELA CHEIA';
+ if(!document.body.classList.contains('fullscreen')&&document.fullscreenElement) await document.exitFullscreen().catch(()=>{});
+});
+document.querySelectorAll('nav button').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ if(btn.dataset.tab!=='Overlay')toast('Abra essa seção pelo Dashboard.');
+}));
+</script>
+</body>
+</html>

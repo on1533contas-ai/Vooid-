@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#050307"><title>VOID BYPASS — Painel</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 10%,#39005a 0,transparent 38%),#030205;color:#f7f3fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:0 17px calc(112px + env(safe-area-inset-bottom))}
+main{max-width:540px;margin:0 auto}.brand{text-align:center;margin:4px 0 12px}.brand h1{font-size:46px;margin:0;font-weight:950}.brand span{color:#a020ff}.brand p{font-size:11px;letter-spacing:.4em;color:#756b7d}
+.status{display:inline-flex;align-items:center;gap:8px;border:1px solid #254a36;border-radius:25px;padding:9px 17px;color:#bbb;font-size:11px;letter-spacing:.12em}.connected-status i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#32d66f;box-shadow:0 0 9px #32d66f88}
+.panel{border:1px solid #8b19e5;border-radius:24px;padding:18px 15px;margin:15px 0;background:linear-gradient(145deg,#100b16,#08060b);box-shadow:0 0 22px #8b00ff20}
+h2{font-size:18px;margin:0 0 14px}h2 span{color:#a020ff}.item{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:55px;border-top:1px solid #251d2b;padding:10px 3px;font-size:14px}
+.switch{appearance:none;width:49px;height:28px;border-radius:20px;background:#302a35;position:relative;flex:none}.switch:before{content:"";position:absolute;width:20px;height:20px;left:4px;top:4px;background:#fff;border-radius:50%;transition:.2s}.switch:checked{background:#9014e9}.switch:checked:before{transform:translateX(21px)}
+.range{width:48%;accent-color:#a020ff}select{max-width:52%;background:#17121d;color:white;border:1px solid #493057;border-radius:9px;padding:8px}
+.nav{display:flex;justify-content:space-around;border:1px solid #7020a5;border-radius:20px;padding:15px 3px;color:#c18aff;font-size:12px}
+a{color:#d19cff}footer{text-align:center;color:#5b5263;font-size:10px;letter-spacing:.3em;margin-top:28px}
+
+.tab-content[hidden]{display:none!important}.tab-content{display:block}
+.nav{display:flex;justify-content:space-around;align-items:center;gap:5px;margin:0;padding:9px 7px;border:1px solid #7020a5;border-radius:20px;background:#08060bef;position:fixed;z-index:100;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(92%,520px);box-shadow:0 8px 28px #0009}
+.nav button{appearance:none;-webkit-appearance:none;flex:1;min-width:0;min-height:64px;margin:0;padding:8px 3px;border:1px solid transparent;border-radius:15px;background:transparent;color:#8e8497;font:600 11px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;touch-action:manipulation;pointer-events:auto}
+.nav button.active{color:#d4a2ff;background:#21102e;border-color:#512078}
+.nav-icon{font-size:22px;line-height:1}
+.remote-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0;padding:0;min-height:0}
+.remote-brand{font-size:23px;line-height:1.05;font-weight:900;letter-spacing:.12em;color:#ddd}
+.remote-brand span{color:#a020ff}
+.connection{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #29232e;border-radius:24px;background:#09080b;color:#77717f;font-size:10px;font-weight:800;letter-spacing:.1em;white-space:nowrap}
+.connection i{width:8px;height:8px;border-radius:50%;background:#32d66f}
+.overlay-panel{border-color:#28212d;background:linear-gradient(145deg,#0b0a0d,#080709);margin:0;padding-top:18px}
+.overlay-panel h2{font-size:14px;letter-spacing:.15em;color:#88808e}
+.overlay-panel .item{min-height:58px;padding-left:14px;font-size:15px}
+.share-label{font-size:11px;letter-spacing:.15em;color:#716b78;margin:14px 0 10px}
+.share-btn,.fullscreen-btn{width:100%;min-height:56px;margin:0;border-radius:15px;color:#fff;font-weight:900;letter-spacing:.08em;font-size:14px;cursor:pointer}
+.share-btn{border:1px solid #a34bff;background:linear-gradient(110deg,#8120d0,#54158b)}
+.preview{height:170px;margin:20px 0 15px;border:1px solid #291632;border-radius:15px;background:#000}
+.fullscreen-btn{border:1px solid #442052;background:#100c16;color:#c58aff}
+.muted{color:#93899c;font-size:13px;line-height:1.6}
+
+.dns-download{border:1px solid #512078;border-radius:20px;padding:18px 15px;margin:15px 0;background:linear-gradient(145deg,#130b1b,#09070c)}
+.dns-download p{color:#93899c;font-size:13px;line-height:1.55;margin:8px 0 15px}
+.dns-download a{display:flex;align-items:center;justify-content:center;min-height:54px;border:1px solid #a34bff;border-radius:14px;background:linear-gradient(110deg,#8120d0,#54158b);color:#fff;text-decoration:none;font-size:14px;font-weight:900;letter-spacing:.08em}
+
+
+/* Entrada animada do VOID BYPASS */
+body.overlay-active > main > header.brand{display:none}
+#tab-overlay{position:relative;isolation:isolate;padding:0!important;margin:0!important}
+#tab-overlay .remote-head{display:none!important}
+#tab-overlay .overlay-panel{margin:0!important;padding-top:18px!important;position:relative;z-index:2}
+#tab-overlay .overlay-panel h2{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+#tab-overlay .overlay-panel h2 .connection{font-size:10px;padding:7px 9px;letter-spacing:.08em}
+#tab-overlay.overlay-enter .remote-head,
+#tab-overlay.overlay-enter .overlay-panel{
+  animation:voidContentIn .85s cubic-bezier(.2,.8,.2,1) both;
+}
+#tab-overlay.overlay-enter .overlay-panel{animation-delay:.16s}
+#tab-overlay.overlay-enter .remote-brand{animation:voidBrandIn .9s cubic-bezier(.16,1,.3,1) both}
+#tab-overlay.overlay-enter .connection{animation:voidFadeIn .7s ease .35s both}
+#tab-overlay .entry-splash{
+  position:absolute;z-index:10;inset:0;min-height:100%;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  border-radius:24px;background:radial-gradient(circle at center,#35104e 0,#100817 48%,#050307 100%);
+  pointer-events:none;animation:voidSplashOut .9s ease .25s forwards;
+}
+#tab-overlay .entry-splash strong{font-size:34px;font-weight:950;letter-spacing:.12em}
+#tab-overlay .entry-splash strong span{color:#b34cff}
+#tab-overlay .entry-splash small{margin-top:12px;color:#bba6ca;font-size:10px;letter-spacing:.35em}
+#tab-overlay .entry-splash i{width:58px;height:3px;margin-top:23px;border-radius:9px;background:linear-gradient(90deg,#7620b9,#d19aff);transform-origin:left;animation:voidLoad .8s ease both}
+@keyframes voidContentIn{from{opacity:0;transform:translateY(28px) scale(.97);filter:blur(7px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes voidBrandIn{from{opacity:0;transform:translateX(-24px);letter-spacing:.35em}to{opacity:1;transform:translateX(0);letter-spacing:.12em}}
+@keyframes voidFadeIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes voidSplashOut{0%{opacity:1;visibility:visible}75%{opacity:1}100%{opacity:0;visibility:hidden}}
+@keyframes voidLoad{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){#tab-overlay.overlay-enter *{animation-duration:.01ms!important;animation-delay:0ms!important}}
+</style></head><body><main>
+<header class="brand"><h1>VOID <span>BYPASS</span></h1><p>PAINEL DE CONTROLE</p><div class="status connected-status"><i></i> CONECTADO</div></header>
+<section class="tab-content" id="tab-painel">
+<section class="panel"><h2>FUNÇÕES <span>AIM</span></h2>
+<div class="item">Ativar Aimbot <input class="switch" type="checkbox"></div>
+<div class="item">Mostrar FOV <input class="switch" type="checkbox"></div>
+<div class="item">Tamanho do FOV <input class="range" type="range" min="1" max="100" value="68"></div>
+<div class="item">Suavidade do AIM <input class="range" type="range" min="1" max="100" value="52"></div>
+<div class="item">Fast Fire
+  <select id="fast-fire-level" aria-label="Nível Fast Fire">
+    <option value="1">Lv 1</option>
+    <option value="2">Lv 2</option>
+    <option value="3">Lv 3</option>
+    <option value="4">Lv 4</option>
+  </select>
+</div>
+<div class="item">Puxada <select><option>Cabeça</option><option>Pescoço</option><option>Peito</option></select></div>
+<div class="item">Alvo <select><option>Mira</option><option>Mais próximo</option></select></div>
+</section>
+<section class="panel"><h2>FUNÇÕES <span>ESP</span></h2>
+<div class="item">ESP Caixa + Vida <input class="switch" type="checkbox"></div>
+<div class="item">Chams <input class="switch" type="checkbox"></div>
+
+
+</section>
+
+</section>
+
+<nav class="nav" aria-label="Navegação principal">
+  <button type="button" data-tab="painel" onclick="voidTab('painel')" class="active" aria-pressed="true">
+    <span class="nav-icon">⌂</span><span>Painel</span>
+  </button>
+  <button type="button" data-tab="overlay" onclick="voidTab('overlay')" aria-pressed="false">
+    <span class="nav-icon">▱</span><span>Overlay</span>
+  </button>
+  <button type="button" data-tab="download" onclick="location.href='dns.html'" aria-pressed="false">
+    <span class="nav-icon">⇩</span><span>Download</span>
+  </button>
+</nav>
+<section class="tab-content" id="tab-download" hidden>
+  <section class="dns-download" aria-labelledby="dns-title">
+    <h2 id="dns-title">⬇ <span>DOWNLOAD DNS</span> VOID</h2>
+    <p>Baixe o perfil VOID DNS para iPhone. Depois de baixar, abra o arquivo e siga as etapas de instalação do iOS.</p>
+    <a href="VOID-DNS.mobileconfig" download="VOID-DNS.mobileconfig">⬇ &nbsp; BAIXAR VOID DNS</a>
+  </section>
+</section>
+<section class="tab-content" id="tab-overlay" hidden>
+  <div class="entry-splash" aria-hidden="true"><strong>VOID <span>BYPASS</span></strong><small>INICIANDO OVERLAY</small><i></i></div>
+  <div class="panel overlay-panel">
+    <h2>OVERLAY ESP VOID <span class="connection"><i></i> CONECTADO</span></h2>
+    <div class="item">Ativar Overlay <input class="switch" type="checkbox" checked></div>
+    <div class="item">Caixa <input class="switch" type="checkbox" checked></div>
+    <div class="item">Vida <input class="switch" type="checkbox"></div>
+    <div class="item">Linha <input class="switch" type="checkbox"></div>
+    <div class="item">Nome <input class="switch" type="checkbox" checked></div>
+    <div class="item">Distância <input class="switch" type="checkbox" checked></div>
+    <div class="share-label">COMPARTILHAR OVERLAY ESP</div>
+    <button class="share-btn" id="share-esp" type="button">↗ &nbsp; COMPARTILHAR ESP</button>
+    <div class="preview" aria-label="Prévia demonstrativa do overlay"></div>
+    <button class="fullscreen-btn" id="fullscreen-preview" type="button">⛶ &nbsp; TELA CHEIA</button>
+  </div>
+</section>
+
+</main>
+<script>
+function voidTab(name) {
+  document.body.classList.toggle('overlay-active', name === 'overlay');
+  var ids = ['painel', 'overlay', 'download'];
+  for (var i = 0; i < ids.length; i++) {
+    var section = document.getElementById('tab-' + ids[i]);
+    if (section) {
+      var isSelected = ids[i] === name;
+      section.hidden = !isSelected;
+      section.style.display = isSelected ? 'block' : 'none';
+    }
+  }
+  if (name === 'overlay') {
+    var overlayScreen = document.getElementById('tab-overlay');
+    if (overlayScreen) {
+      overlayScreen.classList.remove('overlay-enter');
+      void overlayScreen.offsetWidth;
+      overlayScreen.classList.add('overlay-enter');
+    }
+  }
+  var buttons = document.querySelectorAll('.nav button[data-tab]');
+  for (var j = 0; j < buttons.length; j++) {
+    var selected = buttons[j].getAttribute('data-tab') === name;
+    buttons[j].className = selected ? 'active' : '';
+    buttons[j].setAttribute('aria-pressed', selected ? 'true' : 'false');
+  }
+}
+(function () {
+   var fastFire = document.getElementById('fast-fire-level');
+   if (fastFire) fastFire.addEventListener('change', function () {
+     // Controle visual demonstrativo; não altera a taxa de disparo do jogo.
+   });
+
+  voidTab('painel');
+  var share = document.getElementById('share-esp');
+  if (share) share.onclick = function () {
+    var message = 'VOID BYPASS — Overlay ESP demonstrativo';
+    if (navigator.share) navigator.share({title: 'VOID BYPASS', text: message}).catch(function(){});
+    else if (navigator.clipboard) navigator.clipboard.writeText(message).then(function(){ alert('Texto copiado!'); });
+    else alert(message);
+  };
+  var fullscreen = document.getElementById('fullscreen-preview');
+  if (fullscreen) fullscreen.onclick = function () {
+    var preview = document.querySelector('.preview');
+    if (preview && preview.requestFullscreen) preview.requestFullscreen().catch(function(){ alert('Tela cheia indisponível neste navegador.'); });
+    else alert('Tela cheia indisponível neste navegador.');
+  };
+})();
+</script>
+
+</body></html>
